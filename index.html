@@ -1,1 +1,170 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><link rel="icon" href="/test-deploy/favicon.ico"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#000000"/><meta name="description" content="Web site created using create-react-app"/><link rel="apple-touch-icon" href="/test-deploy/logo192.png"/><link rel="manifest" href="/test-deploy/manifest.json"/><title>React App</title><script defer="defer" src="/test-deploy/static/js/main.ba10e849.js"></script><link href="/test-deploy/static/css/main.f855e6bc.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>День валентина</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: #ffcccc;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        .container {
+            margin-top: 100px;
+        }
+
+        h1 {
+            color: #d63384;
+            font-size: 36px;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .yes {
+            background-color: #ff4d6d;
+            color: white;
+        }
+
+        .no {
+            background-color: #333;
+            color: white;
+            max-width: 90vw;
+            max-height: 90vh;
+        }
+
+        .gifs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gif {
+            margin-top: 10%;
+            display: flex;
+            justify-content: center;
+            width: 70%;
+        }
+
+        .gif-yes {
+            width: 5%;
+            margin-top: 10%;
+            display: flex;
+            justify-content: center;
+            visibility: hidden;
+        }
+
+        .gif {
+            margin-top: 5%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="gifs">
+            <div class="gif">
+                <div class="tenor-gif-embed" data-postid="13586749525904344786" data-share-method="host"
+                    data-aspect-ratio="1.19139" data-width="100%"><a
+                        href="https://tenor.com/view/cat-gif-13586749525904344786">Cat GIF</a>from <a
+                        href="https://tenor.com/search/cat-gifs">Cat GIFs</a></div>
+                <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+            </div>
+            <br>
+            <div class="gif-yes">
+                <div class="tenor-gif-embed" data-postid="26113415" data-share-method="host"
+                    data-aspect-ratio="0.790625" data-width="30%">
+                    <a href="https://tenor.com/view/seal-seal-kiss-cute-gif-26113415">Seal Seal Kiss
+                        GIF
+                    </a>
+                </div>
+                <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+            </div>
+        </div>
+        <h1 id="question-text">Катя, ты будешь моей валентинкой? 💖</h1>
+        <div class="buttons">
+            <button class="btn yes" onclick="sendResponse()">Да</button>
+            <button class="btn no" onclick="moveButton()">Нет</button>
+        </div>
+    </div>
+
+    <script>
+        function moveButton() {
+            let button = document.querySelector('.no');
+            const limit = 30;
+            let maxX = window.innerWidth - button.clientWidth - limit;
+            let maxY = window.innerHeight - button.clientHeight - limit;
+            let x = Math.random() * maxX;
+            let y = Math.random() * maxY;
+            button.style.position = 'absolute';
+            button.style.left = x + 'px';
+            button.style.top = y + 'px';
+            sendNoResponse();
+        }
+
+        function sendResponse() {
+            const botToken = '7751109762:AAGFTSZP4X_AafagoJrTuS4iFuTcG6RnFKQ';
+            const chatId = '412654295';
+            const message = 'Она согласиласьl! 🥳';
+
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ chat_id: chatId, text: message })
+            })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
+            changeText("Ура! Ваша награда цветочки и поцелуйчики! 💖");
+
+            document.querySelector('.gif').remove();
+            document.querySelector('.buttons').remove();
+            let gifYes = document.querySelector('.gif-yes');
+            gifYes.style.visibility = "visible";
+            gifYes.style.width = "70%";
+
+        }
+
+        function sendNoResponse() {
+            const botToken = '7751109762:AAGFTSZP4X_AafagoJrTuS4iFuTcG6RnFKQ';
+            const chatId = '412654295';
+            const message = 'Она попыталась отказать :(';
+
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ chat_id: chatId, text: message })
+            })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
+        }
+
+        function changeText(text) {
+            document.getElementById('question-text').innerText = text;
+        }
+    </script>
+</body>
+
+</html>
